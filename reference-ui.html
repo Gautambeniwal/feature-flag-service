@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reference UI — Feature Flag Service</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, sans-serif; padding: 2rem; background: #fff; color: #1a1a1a; max-width: 700px; }
+
+  .tenants { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tenant { padding: 8px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .tenant.active { background: #E6F1FB; color: #185FA5; font-weight: 500; }
+  .tenant.inactive { border: 1px solid #ddd; color: #888; }
+
+  .section-title { font-size: 16px; font-weight: 500; margin-bottom: 1rem; }
+
+  .flag-card { border: 1px solid #e0e0e0; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 10px; }
+  .flag-card.is-default { opacity: 0.7; }
+
+  .flag-header { display: flex; align-items: center; justify-content: space-between; }
+  .flag-info { flex: 1; }
+  .flag-name-row { display: flex; align-items: center; gap: 8px; }
+  .flag-name { font-size: 15px; font-weight: 500; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 8px; }
+  .badge-custom { background: #E6F1FB; color: #185FA5; }
+  .badge-default { background: #f5f5f3; color: #999; }
+  .flag-desc { font-size: 13px; color: #888; margin-top: 4px; }
+
+  .flag-actions { display: flex; align-items: center; gap: 12px; }
+  .reset-link { font-size: 12px; color: #185FA5; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+
+  .toggle { width: 44px; height: 24px; border-radius: 12px; position: relative; cursor: pointer; flex-shrink: 0; }
+  .toggle-knob { width: 18px; height: 18px; border-radius: 50%; background: white; position: absolute; top: 3px; }
+  .toggle.on { background: #185FA5; }
+  .toggle.on .toggle-knob { right: 3px; }
+  .toggle.off { background: #bbb; }
+  .toggle.off .toggle-knob { left: 3px; }
+  .toggle.default-on { background: #185FA5; opacity: 0.5; }
+  .toggle.default-on .toggle-knob { right: 3px; }
+
+  .flag-context { font-size: 11px; color: #888; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+  .flag-context strong { font-weight: 500; }
+
+  .legend { background: #f5f5f3; border-radius: 12px; padding: 1rem 1.25rem; margin-top: 1.5rem; font-size: 13px; color: #888; line-height: 1.8; }
+  .legend-title { font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="tenants">
+  <div class="tenant active">Acme Corp</div>
+  <div class="tenant inactive">Globex Inc</div>
+  <div class="tenant inactive">Initech LLC</div>
+  <div class="tenant inactive">Umbrella Holdings</div>
+</div>
+
+<div class="section-title">Acme Corp — feature flags</div>
+
+<!-- Flag 1: Customized ON (default is OFF) -->
+<div class="flag-card">
+  <div class="flag-header">
+    <div class="flag-info">
+      <div class="flag-name-row">
+        <span class="flag-name">dark_mode</span>
+        <span class="badge badge-custom">customized</span>
+      </div>
+      <div class="flag-desc">Enable dark mode for the application UI</div>
+    </div>
+    <div class="flag-actions">
+      <span class="reset-link">reset</span>
+      <div class="toggle on"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+  <div class="flag-context">Default is <strong>off</strong> — this tenant has it <strong>on</strong></div>
+</div>
+
+<!-- Flag 2: Using default OFF -->
+<div class="flag-card is-default">
+  <div class="flag-header">
+    <div class="flag-info">
+      <div class="flag-name-row">
+        <span class="flag-name">ai_assistant</span>
+        <span class="badge badge-default">default</span>
+      </div>
+      <div class="flag-desc">Show AI assistant in the sidebar</div>
+    </div>
+    <div class="flag-actions">
+      <div class="toggle off"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Flag 3: Using default ON -->
+<div class="flag-card is-default">
+  <div class="flag-header">
+    <div class="flag-info">
+      <div class="flag-name-row">
+        <span class="flag-name">bulk_export</span>
+        <span class="badge badge-default">default</span>
+      </div>
+      <div class="flag-desc">Allow bulk CSV export of records</div>
+    </div>
+    <div class="flag-actions">
+      <div class="toggle default-on"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Flag 4: Customized OFF (default is ON) -->
+<div class="flag-card">
+  <div class="flag-header">
+    <div class="flag-info">
+      <div class="flag-name-row">
+        <span class="flag-name">beta_features</span>
+        <span class="badge badge-custom">customized</span>
+      </div>
+      <div class="flag-desc">Access to beta feature previews</div>
+    </div>
+    <div class="flag-actions">
+      <span class="reset-link">reset</span>
+      <div class="toggle off"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+  <div class="flag-context">Default is <strong>on</strong> — this tenant has it <strong>off</strong></div>
+</div>
+
+<div class="legend">
+  <div class="legend-title">What this mockup shows</div>
+  <div>&#x2022; Tenant selector along the top — clicking one loads that tenant's flags</div>
+  <div>&#x2022; Each flag has a toggle reflecting its <strong>effective state</strong> (not the default)</div>
+  <div>&#x2022; <span class="badge badge-custom" style="font-size:11px;">customized</span> vs <span class="badge badge-default" style="font-size:11px; border: 1px solid #ddd;">default</span> badges distinguish the two states</div>
+  <div>&#x2022; Customized flags show a "reset" link and a context line explaining default vs. current</div>
+  <div>&#x2022; Default flags are slightly muted (lower opacity)</div>
+  <div style="margin-top: 8px; color: #666;">Your implementation does <strong>not</strong> need to match this styling. Use whatever approach you're comfortable with — the important thing is that the functional elements above are present.</div>
+</div>
+
+</body>
+</html>
