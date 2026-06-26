@@ -31,13 +31,8 @@ def health():
 def list_tenants():
     return list(TENANTS.values())
 
-
-# -------------------------------------------------------
-# Your feature flag endpoints go below here.
-#
-# See README.md for the full problem statement.
-# -------------------------------------------------------
 # --- Pydantic Models for API Validation ---
+
 class FlagCreate(BaseModel):
     name: str
     description: str
